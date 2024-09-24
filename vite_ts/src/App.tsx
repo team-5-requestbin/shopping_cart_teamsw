@@ -18,13 +18,15 @@ const Header = () => {
 };
 
 const Product = ({ product }) => {
+  const { title, price, quantity } = product;
+
   return (
     <ul className="product-list">
       <li className="product">
         <div className="product-details">
-          <h3>{product.title}</h3>
-          <p className="price">{product.price}</p>
-          <p className="quantity">{product.quantity} left in stock</p>
+          <h3>{title}</h3>
+          <p className="price">{price}</p>
+          <p className="quantity">{quantity} left in stock</p>
           <div className="actions product-actions">
             <button className="add-to-cart">Add to Cart</button>
             <button className="edit">Edit</button>
@@ -44,7 +46,7 @@ const Products = ({ products }) => {
       <div className="product-listing">
         <h2>Products</h2>
         {products.map((product) => {
-          console.log(product);
+          // console.log(product);
           return <Product key={product._id} product={product} />;
         })}
       </div>
