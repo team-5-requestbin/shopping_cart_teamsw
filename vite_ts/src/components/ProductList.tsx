@@ -1,14 +1,13 @@
-import { useState } from "react";
 import Product from "./product/Product";
 import AddProductForm from "./addproduct/AddProductForm";
 
-const AddProductButton = ({ setAddingNewProduct, addingNewProduct }) => {
+const AddProductButton = ({ setAddingNewProduct }) => {
   return (
     <button
       className="add-product-button"
       onClick={(e) => {
         e.preventDefault();
-        setAddingNewProduct(!addingNewProduct);
+        setAddingNewProduct(true);
       }}
     >
       Add A Product
@@ -16,8 +15,17 @@ const AddProductButton = ({ setAddingNewProduct, addingNewProduct }) => {
   );
 };
 
-const ProductList = ({ products }) => {
-  const [addingNewProduct, setAddingNewProduct] = useState(false);
+const ProductList = ({
+  products,
+  onSubmitAddProduct,
+  onDeleteProduct,
+  isAddFormShown,
+  setIsAddFormShown,
+  onSubmitEditProduct,
+  // isEditFormShown,
+  // setIsEditFormShown,
+}) => {
+  // const [addingNewProduct, setAddingNewProduct] = useState(false);
 
   return (
     <main>
@@ -25,16 +33,25 @@ const ProductList = ({ products }) => {
         <h2>Products</h2>
         {products.map((product) => {
           // console.log(product);
-          return <Product key={product._id} product={product} />;
+          return (
+            <Product
+              key={product._id}
+              product={product}
+              onDeleteProduct={onDeleteProduct}
+              onSubmitEditProduct={onSubmitEditProduct}
+              // isEditFormShown={isEditFormShown}
+              // setIsEditFormShown={setIsEditFormShown}
+            />
+          );
         })}
       </div>
-      {addingNewProduct ? (
-        <AddProductForm />
-      ) : (
-        <AddProductButton
-          setAddingNewProduct={setAddingNewProduct}
-          addingNewProduct={addingNewProduct}
+      {isAddFormShown ? (
+        <AddProductForm
+          onSubmitAddProduct={onSubmitAddProduct}
+          setIsAddFormShown={setIsAddFormShown}
         />
+      ) : (
+        <AddProductButton setAddingNewProduct={setIsAddFormShown} />
       )}
     </main>
   );

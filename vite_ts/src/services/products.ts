@@ -5,22 +5,17 @@ export const getProducts = async () => {
   return data;
 };
 
-// import axios from "axios";
-// import { NewComment } from "../types";
+export const createProduct = async (newProduct) => {
+  const { data } = await axios.post("/api/products", newProduct);
+  return data;
+};
 
-// export const getComments = async () => {
-//   const { data } = await axios.get("/api/comments");
-//   return data;
-// };
+export const deleteProduct = async (id: string) => {
+  const { data } = await axios.delete(`/api/products/${id}`);
+  return data;
+};
 
-// export const getReplies = async (commentId: string) => {
-//   const { data } = await axios.get(
-//     `/api/comment_replies?comment_id=${commentId}`
-//   );
-//   return data;
-// };
-
-// export const createComment = async (newComment: NewComment) => {
-//   const { data } = await axios.post("/api/comments", { ...newComment });
-//   return data;
-// };
+export const updateProduct = async (id: string, product) => {
+  const { data } = await axios.put(`/api/products/${id}`, product);
+  return data;
+};

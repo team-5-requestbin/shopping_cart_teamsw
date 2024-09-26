@@ -1,14 +1,38 @@
 import { useState } from "react";
 
-const EditProductForm = ({ title, price, quantity }) => {
+const EditProductForm = ({
+  _id,
+  title,
+  price,
+  quantity,
+  onSubmitEditProduct,
+  setIsEditFormShown,
+}) => {
   const [productName, setProductName] = useState(title);
   const [productPrice, setProductPrice] = useState(price);
   const [productQuantity, setProductQuantity] = useState(quantity);
 
+  const hideEditForm = () => {
+    setIsEditFormShown(false);
+  };
+
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmitEditProduct(
+            _id,
+            {
+              title: productName,
+              price: productPrice,
+              quantity: productQuantity,
+            },
+            hideEditForm
+          );
+        }}
+      >
         <div className="input-group">
           <label>Product Name</label>
           <input
@@ -44,20 +68,28 @@ const EditProductForm = ({ title, price, quantity }) => {
 
         <div className="actions form-actions">
           <button type="submit">Update</button>
-          <button type="button">Cancel</button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsEditFormShown(false);
+            }}
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>
   );
 };
 
-const EditProductButton = ({ setEditingProduct, editingProduct }) => {
+const EditProductButton = ({ setIsEditFormShown }) => {
   return (
     <button
       className="edit"
       onClick={(e) => {
         e.preventDefault();
-        setEditingProduct(!editingProduct);
+        setIsEditFormShown(true);
       }}
     >
       Edit
@@ -65,30 +97,45 @@ const EditProductButton = ({ setEditingProduct, editingProduct }) => {
   );
 };
 
-const Product = ({ product }) => {
-  const { title, price, quantity } = product;
-  const [editingProduct, setEditingProduct] = useState(false);
+const Product = ({
+  product,
+  onDeleteProduct,
+  onSubmitEditProduct,
+  // isEditFormShown,
+}) => {
+  const { _id, title, price, quantity } = product;
+  const [isEditFormShown, setIsEditFormShown] = useState(false);
 
   return (
     <ul className="product-list">
       <li className="product">
         <div className="product-details">
           <h3>{title}</h3>
-          <p className="price">{price}</p>
+          <p className="price">${price}</p>
           <p className="quantity">{quantity} left in stock</p>
           <div className="actions product-actions">
             <button className="add-to-cart">Add to Cart</button>
-            {editingProduct ? null : (
-              <EditProductButton
-                setEditingProduct={setEditingProduct}
-                editingProduct={editingProduct}
-              />
+            {isEditFormShown ? null : (
+              <EditProductButton setIsEditFormShown={setIsEditFormShown} />
             )}
           </div>
-          <button className="delete-button">
+          <button
+            className="delete-button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log(_id);
+              onDeleteProduct(_id);
+            }}
+          >
             <span>X</span>
           </button>
-          {editingProduct ? <EditProductForm {...product} /> : null}
+          {isEditFormShown ? (
+            <EditProductForm
+              {...product}
+              onSubmitEditProduct={onSubmitEditProduct}
+              setIsEditFormShown={setIsEditFormShown}
+            />
+          ) : null}
         </div>
       </li>
     </ul>
