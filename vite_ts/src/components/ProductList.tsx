@@ -1,13 +1,14 @@
+import { useState } from "react";
 import Product from "./product/Product";
 import AddProductForm from "./addproduct/AddProductForm";
 
-const AddProductButton = ({ setAddingNewProduct }) => {
+const AddProductButton = ({ setIsAddFormShown }) => {
   return (
     <button
       className="add-product-button"
       onClick={(e) => {
         e.preventDefault();
-        setAddingNewProduct(true);
+        setIsAddFormShown(true);
       }}
     >
       Add A Product
@@ -18,29 +19,22 @@ const AddProductButton = ({ setAddingNewProduct }) => {
 const ProductList = ({
   products,
   onSubmitAddProduct,
-  onDeleteProduct,
-  isAddFormShown,
-  setIsAddFormShown,
   onSubmitEditProduct,
-  // isEditFormShown,
-  // setIsEditFormShown,
+  onDeleteProduct,
 }) => {
-  // const [addingNewProduct, setAddingNewProduct] = useState(false);
+  const [isAddFormShown, setIsAddFormShown] = useState(false);
 
   return (
     <main>
       <div className="product-listing">
         <h2>Products</h2>
         {products.map((product) => {
-          // console.log(product);
           return (
             <Product
               key={product._id}
               product={product}
-              onDeleteProduct={onDeleteProduct}
               onSubmitEditProduct={onSubmitEditProduct}
-              // isEditFormShown={isEditFormShown}
-              // setIsEditFormShown={setIsEditFormShown}
+              onDeleteProduct={onDeleteProduct}
             />
           );
         })}
@@ -51,7 +45,7 @@ const ProductList = ({
           setIsAddFormShown={setIsAddFormShown}
         />
       ) : (
-        <AddProductButton setAddingNewProduct={setIsAddFormShown} />
+        <AddProductButton setIsAddFormShown={setIsAddFormShown} />
       )}
     </main>
   );

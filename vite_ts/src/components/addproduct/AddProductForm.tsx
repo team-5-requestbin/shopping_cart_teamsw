@@ -18,6 +18,7 @@ const AddProductForm = ({ onSubmitAddProduct, setIsAddFormShown }) => {
     setProductName("");
     setProductPrice("");
     setProductQuantity("");
+    setIsAddFormShown(false);
   };
 
   return (

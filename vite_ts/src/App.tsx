@@ -10,8 +10,6 @@ import {
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [isAddFormShown, setIsAddFormShown] = useState(false);
-  // const [isEditFormShown, setIsEditFormShown] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -33,7 +31,6 @@ const App = () => {
       if (callback) {
         callback();
       }
-      setIsAddFormShown(false);
     } catch (e) {
       console.error(e);
     }
@@ -72,10 +69,6 @@ const App = () => {
         onSubmitAddProduct={handleSubmitAddProduct}
         onDeleteProduct={handleDeleteProduct}
         onSubmitEditProduct={handleSubmitEditProduct}
-        isAddFormShown={isAddFormShown}
-        setIsAddFormShown={setIsAddFormShown}
-        // isEditFormShown={isEditFormShown}
-        // setIsEditFormShown={setIsEditFormShown}
       />
     </div>
   );

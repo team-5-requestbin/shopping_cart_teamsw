@@ -97,12 +97,7 @@ const EditProductButton = ({ setIsEditFormShown }) => {
   );
 };
 
-const Product = ({
-  product,
-  onDeleteProduct,
-  onSubmitEditProduct,
-  // isEditFormShown,
-}) => {
+const Product = ({ product, onSubmitEditProduct, onDeleteProduct }) => {
   const { _id, title, price, quantity } = product;
   const [isEditFormShown, setIsEditFormShown] = useState(false);
 
