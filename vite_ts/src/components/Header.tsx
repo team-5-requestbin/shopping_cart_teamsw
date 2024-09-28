@@ -57,7 +57,7 @@ const LoadedCart = ({ cartItems, onCheckout }: HeaderProps) => {
               {cartItems.reduce(
                 (acc, item) => acc + item.quantity * item.price,
                 0
-              )}
+              ).toFixed(2)}
             </td>
           </tr>
         </tfoot>
