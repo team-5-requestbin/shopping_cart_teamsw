@@ -11,13 +11,14 @@ import {
   checkoutItems,
 } from "./services/products";
 import { ProductListing, ProductEntry, ProductId } from "./types";
-// import FourOhFour from "./components/FourOhFour";
-// import { ErrorBoundary } from "react-error-boundary";
+import FourOhFour from "./components/FourOhFour";
+import { ErrorBoundary } from "react-error-boundary";
 import { ZodError } from "zod";
 
 const App = () => {
   const [products, setProducts] = useState<ProductListing[]>([]);
   const [cartItems, setCartItems] = useState<ProductListing[]>([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,8 +27,9 @@ const App = () => {
         setProducts(data);
       } catch (error) {
         if (error instanceof ZodError) {
-          console.log("Hello From Zod: Unexpected Data Returned from API Call");
+          console.log("Hello From Zod: Unexpected Data Returned from API Call - fetchProducts");
         }
+        setError(true);
         console.error(error);
       }
     };
@@ -38,8 +40,9 @@ const App = () => {
         setCartItems(data);
       } catch (error) {
         if (error instanceof ZodError) {
-          console.log("Hello From Zod: Unexpected Data Returned from API Call");
+          console.log("Hello From Zod: Unexpected Data Returned from API Call - fetchCartItems");
         }
+        setError(true);
         console.error(error);
       }
     };
@@ -60,8 +63,9 @@ const App = () => {
       }
     } catch (e) {
       if (e instanceof ZodError) {
-        console.log("Hello From Zod: Unexpected Data Returned from API Call");
+        console.log("Hello From Zod: Unexpected Data Returned from API Call - handleSubmitAddProduct");
       }
+      setError(true);
       console.error(e);
     }
   };
@@ -81,8 +85,9 @@ const App = () => {
       }
     } catch (e) {
       if (e instanceof ZodError) {
-        console.log("Hello From Zod: Unexpected Data Returned from API Call");
+        console.log("Hello From Zod: Unexpected Data Returned from API Call - handleSubmitEditProduct");
       }
+      setError(true);
       console.error(e);
     }
   };
@@ -94,6 +99,7 @@ const App = () => {
         prevState.filter((product) => product._id !== productId)
       );
     } catch (e) {
+      setError(true);
       console.error(e);
     }
   };
@@ -119,8 +125,9 @@ const App = () => {
       }
     } catch (e) {
       if (e instanceof ZodError) {
-        console.log("Hello From Zod: Unexpected Data Returned from API Call");
+        console.log("Hello From Zod: Unexpected Data Returned from API Call - handleSubmitAddCart");
       }
+      setError(true);
       console.error(e);
     }
   };
@@ -130,21 +137,28 @@ const App = () => {
       await checkoutItems();
       setCartItems([]);
     } catch (e) {
+      setError(true);
       console.error(e);
     }
   };
 
+  if (error) {
+    return <FourOhFour />;
+  }
+
   return (
-    <div id="app">
-      <Header cartItems={cartItems} onCheckout={handleCheckout} />
-      <ProductList
-        products={products}
-        onSubmitAddProduct={handleSubmitAddProduct}
-        onDeleteProduct={handleDeleteProduct}
-        onSubmitEditProduct={handleSubmitEditProduct}
-        onSubmitAddCart={handleSubmitAddCart}
-      />
-    </div>
+    <ErrorBoundary fallback={<FourOhFour />}>
+      <div id="app">
+        <Header cartItems={cartItems} onCheckout={handleCheckout} />
+        <ProductList
+          products={products}
+          onSubmitAddProduct={handleSubmitAddProduct}
+          onDeleteProduct={handleDeleteProduct}
+          onSubmitEditProduct={handleSubmitEditProduct}
+          onSubmitAddCart={handleSubmitAddCart}
+        />
+      </div>
+    </ErrorBoundary>
   );
 };
 
