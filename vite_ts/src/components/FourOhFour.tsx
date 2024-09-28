@@ -1,11 +1,13 @@
+import Image from "../assets/404.webp";
+
 const FourOhFour = () => {
   return (
     <div>
-      <img src="../assets/404.webp" alt="" />
+      <img src={Image} alt="404 Error" />
       <button
         onClick={() => (window.location.href = "/")}
         style={{
-          backgroundColor: "red",
+          backgroundColor: "blue",
           color: "white",
           padding: "10px 20px",
           border: "none",
