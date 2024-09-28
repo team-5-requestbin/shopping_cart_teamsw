@@ -1,18 +1,18 @@
 import { useState } from "react";
+import { ProductEntry } from "../../types";
 
-const AddProductForm = ({ onSubmitAddProduct, setIsAddFormShown }) => {
+interface AddProductFormProps {
+  onSubmitAddProduct: (newProduct: ProductEntry, callback?: () => void) => void;
+  setIsAddFormShown: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AddProductForm = ({
+  onSubmitAddProduct,
+  setIsAddFormShown,
+}: AddProductFormProps) => {
   const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState<number | string>("");
-  const [productQuantity, setProductQuantity] = useState<number | string>("");
-
-  const handleAddPrice = (e: React.SyntheticEvent) => {
-    const parsedPrice = +e.target.value;
-    setProductPrice(isNaN(parsedPrice) ? "" : parsedPrice);
-  };
-  const handleAddQuantity = (e: React.SyntheticEvent) => {
-    const parsedQuantity = +e.target.value;
-    setProductQuantity(isNaN(parsedQuantity) ? "" : parsedQuantity);
-  };
+  const [productPrice, setProductPrice] = useState("");
+  const [productQuantity, setProductQuantity] = useState("");
 
   const reset = () => {
     setProductName("");
@@ -28,8 +28,8 @@ const AddProductForm = ({ onSubmitAddProduct, setIsAddFormShown }) => {
         onSubmitAddProduct(
           {
             title: productName,
-            price: productPrice,
-            quantity: productQuantity,
+            price: +productPrice,
+            quantity: +productQuantity,
           },
           reset
         );
@@ -55,7 +55,7 @@ const AddProductForm = ({ onSubmitAddProduct, setIsAddFormShown }) => {
           min="0"
           step="0.01"
           value={productPrice}
-          onChange={handleAddPrice}
+          onChange={(e) => setProductPrice(e.target.value)}
           required
         />
       </div>
@@ -67,7 +67,7 @@ const AddProductForm = ({ onSubmitAddProduct, setIsAddFormShown }) => {
           name="product-quantity"
           min="0"
           value={productQuantity}
-          onChange={handleAddQuantity}
+          onChange={(e) => setProductQuantity(e.target.value)}
           required
         />
       </div>

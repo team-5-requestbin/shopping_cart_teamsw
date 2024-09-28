@@ -1,8 +1,25 @@
 import { useState } from "react";
 import Product from "./product/Product";
 import AddProductForm from "./addproduct/AddProductForm";
+import { ProductListing, ProductEntry, ProductId } from "../types";
 
-const AddProductButton = ({ setIsAddFormShown }) => {
+interface ProductListProps {
+  products: ProductListing[];
+  onSubmitAddProduct: (newProduct: ProductEntry, callback?: () => void) => void;
+  onSubmitEditProduct: (
+    productId: ProductId,
+    updatedProduct: ProductEntry,
+    callback?: () => void
+  ) => void;
+  onDeleteProduct: (productId: ProductId) => void;
+  onSubmitAddCart: (productId: ProductId) => void;
+}
+
+interface AddProductButtonProps {
+  setIsAddFormShown: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AddProductButton = ({ setIsAddFormShown }: AddProductButtonProps) => {
   return (
     <button
       className="add-product-button"
@@ -21,7 +38,8 @@ const ProductList = ({
   onSubmitAddProduct,
   onSubmitEditProduct,
   onDeleteProduct,
-}) => {
+  onSubmitAddCart,
+}: ProductListProps) => {
   const [isAddFormShown, setIsAddFormShown] = useState(false);
 
   return (
@@ -29,12 +47,14 @@ const ProductList = ({
       <div className="product-listing">
         <h2>Products</h2>
         {products.map((product) => {
+          // console.log(product._id);
           return (
             <Product
               key={product._id}
               product={product}
               onSubmitEditProduct={onSubmitEditProduct}
               onDeleteProduct={onDeleteProduct}
+              onSubmitAddCart={onSubmitAddCart}
             />
           );
         })}
