@@ -8,3 +8,5 @@ export interface ProductListing {
 export type ProductEntry = Omit<ProductListing, "_id">;
 
 export type ProductId = ProductListing["_id"];
+
+export type CartAdd = { product: ProductListing, item: ProductListing };
